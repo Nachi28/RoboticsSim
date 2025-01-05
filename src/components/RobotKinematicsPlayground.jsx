@@ -319,7 +319,7 @@ const RobotKinematicsPlayground = () => {
       {/* Main Content */}
       <div style={{ backgroundColor: 'lavender' }} className="flex-1 w-full p-4">
         {showModeSelect ? (
-          <div className="w-full flex items-center justify-center">
+          <div className="w-full h-[85vh] flex items-center justify-center">
             <Card className="p-8 max-w-md w-full shadow-lg rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-center">Robotics Sim 2D</h2>
               <h3 className="text-xl mb-6 text-center">Select Kinematics Mode</h3>
