@@ -24,7 +24,7 @@ A web-based robotics simulator designed to simplify the understanding of the com
 
 ## Tech Stack
 - **Framework**: React
-- **UI Components**: [shadcn/ui](https://ui.shadcn.dev)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com)
 - **Styling**: Tailwind CSS
 - **Graphics**: SVG for 2D robotic arm visualization
 - **State Management**: React Hooks
