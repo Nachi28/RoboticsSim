@@ -30,6 +30,24 @@ const checkFloorCollision = (jointConfig) => {
   return true;
 };
 
+const calculateForwardKinematics = (jointAngles) => {
+  let x = BASE_X;
+  let y = BASE_Y;
+  let currentAngle = 0;
+
+  jointAngles.forEach((joint) => {
+    currentAngle += joint.angle;
+    x += joint.length * Math.cos((currentAngle * Math.PI) / 180);
+    y -= joint.length * Math.sin((currentAngle * Math.PI) / 180);
+  });
+
+  // Return coordinates relative to base
+  return {
+    x: Math.round(x - BASE_X),
+    y: Math.round(BASE_Y - y)
+  };
+};
+
 
 const RobotKinematicsPlayground = () => {
   // Add new state variables
@@ -63,20 +81,6 @@ const RobotKinematicsPlayground = () => {
 
   const [possibleSolutions, setPossibleSolutions] = useState([]);
   const [selectedSolution, setSelectedSolution] = useState(0);
-  const [paths, setPaths] = useState([]);
-
-  useEffect(() => {
-    console.log("Updated possible solutions:", possibleSolutions);
-    const newPaths = possibleSolutions.map((solution) => getRobotPath(solution));
-    setPaths(newPaths);
-  }, [possibleSolutions]);
-
-  // Update path on mode change or initial load
-  useEffect(() => {
-    const initialPath = getRobotPath();
-    setPaths([initialPath]);
-  }, [joints, mode]);
-
 
   useEffect(() => {
     localStorage.setItem('robotMode', mode);
@@ -110,23 +114,6 @@ const RobotKinematicsPlayground = () => {
   }, [mode, numJoints]);
 
 
-  const calculateForwardKinematics = (jointAngles) => {
-    let x = BASE_X;
-    let y = BASE_Y;
-    let currentAngle = 0;
-
-    jointAngles.forEach((joint) => {
-      currentAngle += joint.angle;
-      x += joint.length * Math.cos((currentAngle * Math.PI) / 180);
-      y -= joint.length * Math.sin((currentAngle * Math.PI) / 180);
-    });
-
-    // Return coordinates relative to base
-    return {
-      x: Math.round(x - BASE_X),
-      y: Math.round(BASE_Y - y)
-    };
-  };
 
   // Modified to handle multiple joints using iterative optimization
   const calculateInverseKinematics = (targetX, targetY, currentJoints) => {
@@ -215,8 +202,8 @@ const RobotKinematicsPlayground = () => {
     if (newX === undefined) newX = endEffector.x;
 
     // Convert relative coordinates to absolute for calculations
-    const absoluteX = BASE_X + newX;
-    const absoluteY = BASE_Y - newY;
+    var absoluteX = BASE_X + newX;
+    var absoluteY = BASE_Y - newY;
 
     // Constrain Y to be above floor
     if (absoluteY > FLOOR_Y) absoluteY = FLOOR_Y;
